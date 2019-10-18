@@ -17,7 +17,7 @@ router.get('/producto', (req, res) => {
 
 //show single product
 router.get('/producto/:idProducto', (req, res) => {
-    const id = req.params.idProducto
+    const id = req.params.idProducto;
     let sql = "SELECT * FROM Producto WHERE idProducto = ?";
     let query = conn.query(sql, id, (err, results) => {
         if (err) throw err;
