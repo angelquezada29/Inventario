@@ -11,7 +11,7 @@ router.get('/producto', (req, res) => {
     let sql = "SELECT * FROM Producto;";
     let query = conn.query(sql, (err, results) => {
         if (err) throw err;
-        res.send(JSON.stringify({ "status": 200, "error": false, "response": results }));
+        return res.status(200).json({ "error": false, "response": results });
     });
 });
 
@@ -21,7 +21,7 @@ router.get('/producto/:idProducto', (req, res) => {
     let sql = "SELECT * FROM Producto WHERE idProducto = ?";
     let query = conn.query(sql, id, (err, results) => {
         if (err) throw err;
-        res.send(JSON.stringify({ "status": 200, "error": false, "response": results }));
+        return res.status(200).json({ "error": false, "response": results });
     });
 });
 
@@ -32,23 +32,27 @@ router.post('/producto', (req, res) => {
         let sql = "INSERT INTO Producto SET ?";
         let query = conn.query(sql, req.body, (err, results) => {
             if (err) throw err;
-            res.send(JSON.stringify({ "status": 201, "error": false, "response": `Producto agregado con ID: ${results.insertId}` }));
+            return res.status(201).json({ "error": false, "response": `Producto agregado con ID: ${results.insertId}` });
         });
     } else {
-        res.send(res.status(500).json({ "error": true, "msg": "Error validacion" }));
+        return res.status(400).json({ "error": true, "msg": "Error validacion" });
     }
 
 });
 
 //update product
 router.put('/producto/:idProducto', (req, res) => {
-    const id = req.params.idProducto
-    let sql = "UPDATE Producto SET ? WHERE idProducto = ?";
-    let query = conn.query(sql, [req.body, id], (err, results) => {
-        if (err) throw err;
+    if (!schemaProduct.validate(req.body).error) {
+        const id = req.params.idProducto
+        let sql = "UPDATE Producto SET ? WHERE idProducto = ?";
+        let query = conn.query(sql, [req.body, id], (err, results) => {
+            if (err) throw err;
 
-        res.send(JSON.stringify({ "status": 200, "error": false, "response": results }));
-    });
+            return res.status(200).json({ "error": false, "response": results });
+        });
+    } else {
+        return res.status(400).json({ "error": true, "msg": "Error validacion" });
+    }
 });
 
 //delete product
@@ -57,7 +61,7 @@ router.delete('/producto/:idProducto', (req, res) => {
     let sql = "DELETE FROM Producto WHERE idProducto = ?";
     let query = conn.query(sql, id, (err, results) => {
         if (err) throw err;
-        res.send(JSON.stringify({ "status": 200, "error": false, "response": results }));
+        return res.status(200).json({ "error": false, "response": results });
     });
 });
 

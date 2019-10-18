@@ -18,6 +18,7 @@ const schemaProduct = Joi.object({
 
     fecha: Joi.string()
         .max(250)
+        .allow('', null)
 });
 
 const schemaInventory = Joi.object({
@@ -39,8 +40,7 @@ const schemaInventory = Joi.object({
         .integer()
         .min(1),
 
-    fechaDeCarga: Joi.string()
-        .max(250)
+    fechaDeCarga: Joi.number()
 });
 
 module.exports.schemaProduct = schemaProduct;
