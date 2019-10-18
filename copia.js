@@ -1,15 +1,29 @@
-const app = express();
-const conexion = require('./conexion-base-de-datos/conexion');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-const bodyParser = require('body-parser');
-const cors = require('cors');
+var cors = require('cors');
 
-conexion.conectar();
-var conn = conexion.conn;
+var app = express();
+var mysql = require('mysql');
 
+ 
 app.use(cors());
 // parse application/json
 app.use(bodyParser.json());
+ 
+//create database connection
+var conn = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'angel92teltron',
+  database: 'InventarioDB'
+});
+ 
+//connect to database
+conn.connect((err) =>{
+  if(err) throw err;
+  console.log('Mysql Connected...');
+});
 
 //show all Alumnos
 app.get('/api/inventario',(req, res) => {
@@ -98,4 +112,9 @@ app.delete('/api/producto/:idProducto',(req, res) => {
     if(err) throw err;
       res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
   });
+});
+ 
+//Server listening
+app.listen(3000,() =>{
+  console.log('Server started on port 3000...');
 });
