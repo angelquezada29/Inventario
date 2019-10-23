@@ -1,4 +1,8 @@
 const express = require('express');
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 const bodyParser = require('body-parser');
 
 const cors = require('cors');
@@ -20,9 +24,18 @@ app.use((req, res) => res.status(404).json({
   msg: 'Peticion incorrecta',
 }));
 
+process.env.NODE_ENV = 'test';
 // Server listening
-let server = app.listen(process.env.PORT, () => {
-  console.log(`Server started on port ${process.env.PORT}...`);
-});
+if (process.env.NODE_ENV === 'test') {
+  app.listen(5000, () => {
+    console.log(`Server started on port 5000...`);
+  });
+}
+
+if (process.env.NODE_ENV === 'development') {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server started on port ${process.env.PORT}...`);
+  });
+}
 
 module.exports = app;

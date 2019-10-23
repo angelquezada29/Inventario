@@ -4,8 +4,8 @@ const mysql = require('mysql');
 let conn = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'angel92teltron',
-    database: 'InventarioDB'
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 });
 
 module.exports.conn = conn;
