@@ -1,27 +1,26 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-var cors = require('cors');
+const cors = require('cors');
 
-var app = express();
+const app = express();
+const router = require('./routes/index');
+const connMySql = require('./controllers/connection');
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(router);
 
-var products = require('./controllers/product');
-var inventory = require('./controllers/inventory');
+connMySql.connect();
 
-app.use('/api', products);
-app.use('/api', inventory);
+app.use(express.json());
 
-app.use((req, res) => {
-	return res.status(404).json({
-		'error': true,
-		'msg': 'Peticion incorrecta'
-	});
-});
+app.use((req, res) => res.status(404).json({
+  error: true,
+  msg: 'Peticion incorrecta',
+}));
 
-//Server listening
+// Server listening
 app.listen(3000, () => {
   console.log('Server started on port 3000...');
 });
