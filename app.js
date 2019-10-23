@@ -21,8 +21,8 @@ app.use((req, res) => res.status(404).json({
 }));
 
 // Server listening
-let server = app.listen(3000, () => {
-  console.log('Server started on port 3000...');
+let server = app.listen(process.env.PORT, () => {
+  console.log(`Server started on port ${process.env.PORT}...`);
 });
 
 module.exports = app;

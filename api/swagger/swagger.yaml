@@ -1,0 +1,114 @@
+swagger: "2.0"
+info:
+  description: This is a documentacion de la aplicacion inventario como funciona las APIs
+  version: 1.0.0
+  title: Inventory APP
+  contact:
+    email: angelquezada29@gmail.com
+host: localhost:3000
+paths:
+          
+  /producto/{idProducto}:
+    get:
+        tags:
+        - API Producto
+        summary: Obtener un producto
+        description: Obtiene un producto seleccionado previamente
+        parameters:
+          - name: idProducto
+            type: integer
+            in: path
+            description: IdProducto
+            required: true
+        responses:
+          200:
+            description: "Se proceso bien"
+          400:
+            description: "Ocurrio un error al procesar"
+            
+  /producto:
+    get:
+        tags:
+        - API Producto
+        summary: Obtiene los productos
+        description: Obtiene todos los productos que tiene el inventario
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        responses:
+          200:
+            description: Status OK
+          400:
+            description: Ocurrio un error al traer los productos
+            
+    post:
+      tags:
+      - API Producto
+      summary: Agregar un nuevo producto
+      description: Agrega un nuevo producto a la base de datos
+      operationId: addProduct
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Informacion del producto a agregar
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        201:
+          description: Producto agregado con exito
+        400:
+          description: Ocurrio un problema al agregar producto
+          
+    put:
+      tags:
+      - API Producto
+      summary: Editar un producto
+      description: Edita un solo producto de la base de datos
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Se realizo con exito
+        400:
+          description: Ocurrio un error al procesar los datos
+          
+    delete:
+      tags:
+      - API Producto
+      summary: Eliminar un producto
+      description: Elimina un producto que fue seleccioado anteriormente
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Se proceso OK
+        400:
+          description: Ocurrio un error en la solicitud
+
+definitions:
+  Product:
+    type: object
+    properties:
+      idProducto:
+        type: integer
+      nombre:
+        type: string
+      marca:
+        type: string
+      precio:
+        type: integer
+      fecha:
+        type: string
+    required:
+      - idProducto
+      - nombre
